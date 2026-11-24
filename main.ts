@@ -6,5 +6,11 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const reply =
   "I'm on vacation. A junior model with no context and full confidence is handling your email. Good luck to us both.";
 
+// The gate refuses anything over 160 characters, so fail loudly
+// rather than shipping an invalid entry.
+if (reply.length > 160) {
+  throw new Error(`reply is ${reply.length} characters, over the 160 cap`);
+}
+
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", reply, "utf8");
